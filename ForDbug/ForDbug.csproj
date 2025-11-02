@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sklad2.BLL\Sklad2.BLL.csproj" />
+    <ProjectReference Include="..\Sklad2.Core\Sklad2.Core.csproj" />
+    <ProjectReference Include="..\Sklad2.DAL\Sklad2.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
