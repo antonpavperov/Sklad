@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Sklad2.Core\Sklad2.Core.csproj" />
     <ProjectReference Include="..\Sklad2.WEB.Client\Sklad2.WEB.Client.csproj" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.4" />
   </ItemGroup>
 

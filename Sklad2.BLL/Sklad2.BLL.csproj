@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sklad2.Core\Sklad2.Core.csproj" />
+  </ItemGroup>
+
 </Project>

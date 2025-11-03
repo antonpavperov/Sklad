@@ -17,6 +17,9 @@ namespace Sklad2.Core.DTO
         public int? Number {  get; set; }
 
 
+        public int ApplicationId { get; set; }
+
+
         public ApplicationDto? Application { get; set; }
 
         

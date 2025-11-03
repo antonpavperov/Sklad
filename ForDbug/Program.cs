@@ -1,4 +1,7 @@
-﻿using Sklad2.Core;
+﻿using Mapster;
+using Sklad2.Core;
+using Sklad2.Core.OutputModels;
+using Sklad2.DAL;
 namespace ForDbug
 
 {
@@ -8,7 +11,11 @@ namespace ForDbug
         {
             DataContext data = new DataContext();
 
-            data.Database.EnsureCreated();
+            ApplicationRepository repository = new ApplicationRepository(data);
+
+            var a = repository.GetAll();
+
+            var b = a[1].Adapt<ApplicationOutputModel>(); 
         }
     }
 }

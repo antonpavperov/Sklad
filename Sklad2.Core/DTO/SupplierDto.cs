@@ -20,6 +20,6 @@ namespace Sklad2.Core.DTO
         public int? ApplicationItemsId { get; set; }
 
 
-        public ApplicationItemsDto? ApplicationItems { get; set; }
+        public ApplicationItemsDto? ApplicationItems { get; set; } = new ApplicationItemsDto();
     }
 }

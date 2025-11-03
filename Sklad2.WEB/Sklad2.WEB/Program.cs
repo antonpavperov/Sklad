@@ -1,5 +1,7 @@
-using Sklad2.WEB.Client.Pages;
+//using Sklad2.WEB.Client.Pages;
 using Sklad2.WEB.Components;
+using Mapster;
+using Sklad2.Core;
 
 namespace Sklad2.WEB
 {
@@ -13,6 +15,10 @@ namespace Sklad2.WEB
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
+
+            TypeAdapterConfig.GlobalSettings.Apply(new MapsterConfig());
+            builder.Services.AddMapster();
 
             var app = builder.Build();
 

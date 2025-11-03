@@ -19,5 +19,15 @@ namespace Sklad2.Core.DTO
 
 
         public List<ApplicationItemsDto>? Items { get; set; } = new List<ApplicationItemsDto>();
+
+
+
+        public int SupplierId { get; set; }
+
+
+        public SupplierDto? Supplier { get; set; }
+
+
+        
     }
 }
