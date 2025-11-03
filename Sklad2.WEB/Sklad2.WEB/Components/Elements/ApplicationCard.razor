@@ -5,7 +5,7 @@
     <div class="card-body">
         <h5 class="card-title">@Application.Id</h5>
         <p class="card-text">@(Application?.SupplierName ?? "Нет поставщика")</p>
-        <p class="card-text">@(Application?.Created.ToString("yyyy-MM-dd HH:mm") ?? "Нет даты")</p>
+        <p class="card-text">@(Application?.Created.ToString("dd-MM-yyyy HH:mm") ?? "Нет даты")</p>
         <a href="#" class="btn btn-primary">Подробнее</a>
     </div>
 </div>
