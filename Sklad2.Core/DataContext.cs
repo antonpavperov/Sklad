@@ -41,6 +41,10 @@ namespace Sklad2.Core
         {
             string connectionString = "Server = localHost; Port=5432; User Id=postgres;Password=Gaefamafa12;Database=NewAluminiumStorageSystem2;";
             optionsBuilder.UseNpgsql(connectionString);
+
         }
+
+
+
     }
 }

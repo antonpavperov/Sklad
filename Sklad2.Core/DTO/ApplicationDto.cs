@@ -22,10 +22,10 @@ namespace Sklad2.Core.DTO
 
 
 
-        public int SupplierId { get; set; }
+        //public int SupplierId { get; set; }
 
 
-        public SupplierDto? Supplier { get; set; }
+        //public SupplierDto? Supplier { get; set; }
 
 
         

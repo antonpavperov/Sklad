@@ -2,6 +2,10 @@
 using Sklad2.WEB.Components;
 using Mapster;
 using Sklad2.Core;
+using Sklad2.Core.IReposytories;
+using Sklad2.DAL;
+using Sklad2.BLL;
+
 
 namespace Sklad2.WEB
 {
@@ -15,6 +19,13 @@ namespace Sklad2.WEB
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
+
+            builder.Services.AddDbContext<DataContext>();
+
+            builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
+            builder.Services.AddScoped<Service>();
 
 
             TypeAdapterConfig.GlobalSettings.Apply(new MapsterConfig());

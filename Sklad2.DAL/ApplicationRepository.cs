@@ -16,19 +16,21 @@ namespace Sklad2.DAL
 
         }
 
+        public ApplicationDto Add(ApplicationDto application)
+        {
+            _dataContext.Add(application);
+            _dataContext.SaveChanges();
+
+            return application;
+        }
+
         public List<ApplicationDto> GetAll()
         {
             var result = _dataContext.Application
-                .Include(a => a.Supplier)
-                .Include(a => a.User)
-                .Include(a => a.Items)          
-                    .ThenInclude(i => i.ScrapType)
-                .OrderBy(a => a.Id)
-                .ToList();
-
+                .OrderBy(a => a.Id).ToList();
+                
             return result;
         }
-
 
     }
 }

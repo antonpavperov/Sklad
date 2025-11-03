@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sklad2.WEB", "Sklad2.WEB\Sklad2.WEB\Sklad2.WEB.csproj", "{C5399AB6-DAB5-411C-827A-5CF51CC765D3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1E2923F7-D1E4-413A-8EE5-2215FD29B185} = {1E2923F7-D1E4-413A-8EE5-2215FD29B185}
+		{62D42923-BD31-4913-9E8E-4F83E8A56122} = {62D42923-BD31-4913-9E8E-4F83E8A56122}
 		{86453499-5B41-4678-9F6E-6727A7C7880A} = {86453499-5B41-4678-9F6E-6727A7C7880A}
 	EndProjectSection
 EndProject

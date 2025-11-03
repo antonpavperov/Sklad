@@ -13,16 +13,12 @@ namespace Sklad2.Core
     {
         public void Register(TypeAdapterConfig config)
         {
-
             config.NewConfig<ApplicationDto, ApplicationOutputModel>()
-            .Map(dest => dest.SupplierName, src => src.Supplier.Name)
-            .Map(dest => dest.Created, src => src.Created)
-            .Map(dest => dest.Items, src => src.Items)
-            .Map(dest => dest.UserName, src => src.User != null ? src.User.Login : null);
-
-
-            config.NewConfig<ApplicationItemsDto, ApplicationItemOutputModel>()
-               .Map(dest => dest.ScrapTypeName, src => src.ScrapType != null ? src.ScrapType.Name : null);
+                .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.Created, src => src.Created ?? DateTime.MinValue)
+            .Map(dest => dest.SupplierName,
+                 src => src.Items != null && src.Items.Any() ? src.Items.First().Supplier.Name
+                        : null);
         }
 
     } 

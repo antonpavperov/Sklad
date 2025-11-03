@@ -20,13 +20,16 @@ namespace Sklad2.Core.DTO
         public int ApplicationId { get; set; }
 
 
+        public int SupplierId { get; set; }
+
+
         public ApplicationDto? Application { get; set; }
 
         
         public ScrapTypeDto? ScrapType { get; set; }
 
 
-        public SupplierDto? Suppliers { get; set; }        
+        public SupplierDto? Supplier { get; set; }        
         
         
         public WareHouseDto? WareHouse { get; set; } 
