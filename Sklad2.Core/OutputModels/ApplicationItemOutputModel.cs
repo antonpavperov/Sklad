@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sklad2.Core.OutputModels
 {
-    internal class ApplicationItemOutputModel
+    public class ApplicationItemOutputModel
     {
         public int? Id { get; set; }
 

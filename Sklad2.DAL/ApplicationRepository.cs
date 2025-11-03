@@ -28,6 +28,8 @@ namespace Sklad2.DAL
         {
             var result = _dataContext.Application
                 .Include(a => a.Items)
+                    .ThenInclude(i => i.ScrapType)
+                .Include(a => a.Items)
                     .ThenInclude(i =>i.Supplier)
                 .OrderBy(a => a.Id).ToList();
                 

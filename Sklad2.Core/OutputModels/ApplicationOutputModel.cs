@@ -18,7 +18,7 @@ namespace Sklad2.Core.OutputModels
         public string UserName { get; set; }
 
 
-        public List<ApplicationItemsDto> Items { get; set; } = new List<ApplicationItemsDto>();
+        public List<ApplicationItemOutputModel> Items { get; set; } = new List<ApplicationItemOutputModel>();
 
 
         public string SupplierName { get; set; }

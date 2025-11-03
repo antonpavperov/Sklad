@@ -1,0 +1,49 @@
+﻿@page "/{Id:int}"
+@inject Service Service
+
+<h3>@application.Id</h3>
+<h3>@application.SupplierName</h3>
+<h3>@application.Created</h3>
+
+@if (application.Items == null || !application.Items.Any())
+{
+    <p>Нет данных по лому.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Тип лома</th>
+                <th>Количество</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in application.Items)
+            {
+                <tr>
+                    <td>@item.Number</td>
+                    <td>@item.ScrapTypeName</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+}
+
+@code {
+	[Parameter]
+	public int Id{ get; set; }
+
+	ApplicationOutputModel application;
+
+	protected override void OnInitialized()
+	{
+		application = Service.GetAll().Where(a => a.Id == Id).FirstOrDefault();
+
+		base.OnInitialized();
+	}
+
+}
