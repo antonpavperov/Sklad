@@ -13,6 +13,7 @@ namespace Sklad2.Core
     {
         public void Register(TypeAdapterConfig config)
         {
+            config.Default.PreserveReference(true);
             config.NewConfig<ApplicationDto, ApplicationOutputModel>()
                 .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Created, src => src.Created ?? DateTime.MinValue)

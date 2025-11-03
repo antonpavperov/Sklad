@@ -27,6 +27,8 @@ namespace Sklad2.DAL
         public List<ApplicationDto> GetAll()
         {
             var result = _dataContext.Application
+                .Include(a => a.Items)
+                    .ThenInclude(i =>i.Supplier)
                 .OrderBy(a => a.Id).ToList();
                 
             return result;
