@@ -5,6 +5,7 @@ using Sklad2.Core;
 using Sklad2.Core.IReposytories;
 using Sklad2.DAL;
 using Sklad2.BLL;
+using Sklad2.Core.MappsterStuff;
 
 
 namespace Sklad2.WEB
@@ -24,6 +25,10 @@ namespace Sklad2.WEB
             builder.Services.AddDbContext<DataContext>();
 
             builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
+            builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+
+            builder.Services.AddScoped<IScrapTypeRepository, ScrapTypeRepository>();
 
             builder.Services.AddScoped<Service>();
 

@@ -1,14 +1,157 @@
 ﻿@page "/"
-@inject Service Service
-
-
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<div class="container">
+<div class="container" style="margin-bottom:15px;">
+	<InputText class="form-control" placeholder="Поиск по поставщику" @bind-Value="searchText" />
+	<button class="btn btn-primary" @onclick="OnSearch">Искать</button>
 
-@foreach(var p in Service.GetAll())
-{
-	<ApplicationCard Application="p"/>
-}
+
+	<InputSelect @bind-Value="searchSupplierName">
+		<option value="">Все поставщики</option>
+		@foreach (var supplier in allApplications.Select(a => a.SupplierName).Distinct())
+		{
+			<option value="@supplier">@supplier</option>
+		}
+	</InputSelect>
 </div>
+
+<button class="btn btn-success mt-2" @onclick="ShowModal">Добавить заявку</button>
+
+
+
+<div class="container m-3" style="display:flex; flex-wrap: wrap;">
+
+	@foreach(var a in applications)
+	{
+		<ApplicationCard Application="a"/>
+	}
+</div>
+
+
+@if (isModalShowed)
+{
+	<div class="modal show d-block" style="background-color:silver">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Добавить заявку</h5>
+					<button type="button" class="btn-close" @onclick="HideModal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label>Поставщик</label>
+						<InputSelect class="form-control" @bind-Value="newApplication.SupplierId">
+							<option value="">Выберите поставщика</option>
+							@foreach (var supplier in suppliers)
+							{
+								<option value="@supplier.Id">@supplier.Name</option>
+							}
+						</InputSelect>
+					</div>
+
+					<div class="mb-3">
+						<label>Лома</label>
+						@foreach (var item in newApplication.Items)
+						{
+							item.SupplierId = newApplication.SupplierId;
+							<div class="d-flex mb-2">
+								<InputSelect class="form-control me-2" @bind-Value="item.ScrapTypeId">
+									<option value="">Выберите лом</option>
+									@foreach (var scrap in scrapTypes)
+									{
+										<option value="@scrap.Id">@scrap.Name</option>
+									}
+								</InputSelect>
+								<InputNumber class="form-control" @bind-Value="item.Quantity" placeholder="Вес" />
+								<button class="btn btn-danger ms-2" @onclick="() => RemoveItem(item)">X</button>
+							</div>
+						}
+						<button class="btn btn-secondary mt-2" @onclick="AddItem">Добавить лом</button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" @onclick="HideModal">Закрыть</button>
+					<button type="button" class="btn btn-primary" @onclick="SaveApplication">Сохранить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
+@code{
+	[Inject]
+	public Service Service { get; set; }
+
+	private List<ApplicationOutputModel> allApplications;
+	private List<ApplicationOutputModel> applications;
+
+	private ApplicationOutputModel newApplication = new();
+	private List<SupplierDto> suppliers;
+	private List<ScrapTypeDto> scrapTypes;
+
+	private string searchText;
+	private string searchSupplierName;
+
+	private bool isModalShowed;
+
+	protected override void OnInitialized()
+	{
+		allApplications = Service.GetAll();
+		applications = allApplications;
+		isModalShowed = false;
+		suppliers = Service.GetSuppliers();
+		scrapTypes = Service.GetScrapTypes();
+	}
+
+
+	private void OnSearch()
+	{
+		applications = allApplications
+			.Where(a =>
+				(string.IsNullOrWhiteSpace(searchText) ||
+					(a.SupplierName != null && a.SupplierName.Contains(searchText, StringComparison.OrdinalIgnoreCase)))
+				&&
+				(string.IsNullOrWhiteSpace(searchSupplierName) || a.SupplierName == searchSupplierName)
+			)
+			.ToList();
+	}
+
+
+	private void ShowModal()
+	{
+		newApplication = new ApplicationOutputModel { Items = new List<ApplicationItemOutputModel>() };
+		AddItem();
+		isModalShowed = true;
+	}
+
+
+	private void HideModal()
+	{
+		isModalShowed = false;
+	}
+
+
+	private void AddItem()
+	{
+		newApplication.Items.Add(new ApplicationItemOutputModel());
+	}
+
+
+	private void RemoveItem(ApplicationItemOutputModel item)
+	{
+		newApplication.Items.Remove(item);
+	}
+
+
+	private void SaveApplication()
+	{
+		Service.AddApplication(newApplication);
+		allApplications = Service.GetAll();
+		applications = allApplications;
+		HideModal();
+	}
+
+}

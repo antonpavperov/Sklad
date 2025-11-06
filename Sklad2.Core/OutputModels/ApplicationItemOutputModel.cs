@@ -18,5 +18,11 @@ namespace Sklad2.Core.OutputModels
 
 
         public string? ScrapTypeName { get; set; }
+
+
+        public int ScrapTypeId { get; set; }
+
+
+        public int SupplierId { get; set; }
     }
 }

@@ -36,5 +36,21 @@ namespace Sklad2.DAL
             return result;
         }
 
+
+        public void Delete(int id)
+        {
+            var entity = _dataContext.Application
+                .Include(a => a.Items)
+                .FirstOrDefault(a => a.Id == id);
+
+            if (entity != null)
+            {
+                _dataContext.ApplicationItems.RemoveRange(entity.Items);
+                _dataContext.Application.Remove(entity);
+                _dataContext.SaveChanges();
+            }
+        }
+
+
     }
 }

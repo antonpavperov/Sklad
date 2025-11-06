@@ -25,7 +25,10 @@ namespace Sklad2.Core.DTO
 
         public ApplicationDto? Application { get; set; }
 
-        
+
+        public int? ScrapTypeId { get; set; }
+
+
         public ScrapTypeDto? ScrapType { get; set; }
 
 

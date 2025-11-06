@@ -1,17 +1,80 @@
-﻿<h3>Заявка от менеджера</h3>
+﻿@using Sklad2.Core.OutputModels
+@inject Service Service
 
-
-<div class="card" style="width: 18rem;">   
+<div class="card m-2" style="width: 18rem;">
     <div class="card-body">
-        <h5 class="card-title">@Application.Id</h5>
-        <p class="card-text">@(Application?.SupplierName ?? "Нет поставщика")</p>
-        <p class="card-text">@(Application?.Created.ToString("dd-MM-yyyy HH:mm") ?? "Нет даты")</p>
-        <a href="/@Application.Id" class="btn btn-primary">Подробнее</a>
+        <h5 class="card-title">Заявка №@Application.Id</h5>
+        <p class="card-text">
+            Поставщик: <strong>@Application.SupplierName</strong><br />
+            Дата: @Application.Created.ToString("dd.MM.yyyy HH:mm")
+        </p>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-primary btn-sm" @onclick="ShowDetails">Подробнее</button>
+            <button class="btn btn-danger btn-sm" @onclick="Delete">Удалить</button>
+        </div>
     </div>
 </div>
+
+@if (isDetailsShown)
+{
+    <div class="modal show d-block" style="background-color:rgba(0,0,0,0.5)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Заявка №@Application.Id</h5>
+                    <button type="button" class="btn-close" @onclick="HideDetails"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Поставщик:</strong> @Application.SupplierName</p>
+                    <p><strong>Дата создания:</strong> @Application.Created</p>
+                    <hr />
+                    <h6>Содержимое заявки:</h6>
+                    @if (Application.Items != null && Application.Items.Any())
+                    {
+                        <ul>
+                            @foreach (var item in Application.Items)
+                            {
+                                <li>@item.ScrapTypeName — @item.Quantity кг</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p><em>Нет данных</em></p>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="HideDetails">Закрыть</button>
+                    <button class="btn btn-danger" @onclick="Delete">Удалить заявку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     [Parameter]
     public ApplicationOutputModel Application { get; set; }
 
+    [Parameter]
+    public EventCallback OnChanged { get; set; }
+
+    private bool isDetailsShown = false;
+
+    private void ShowDetails()
+    {
+        isDetailsShown = true;
+    }
+
+    private void HideDetails()
+    {
+        isDetailsShown = false;
+    }
+
+    private void Delete()
+    {
+        Service.DeleteApplication(Application.Id);
+        OnChanged.InvokeAsync(); 
+        HideDetails();
+    }
 }

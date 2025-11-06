@@ -21,6 +21,9 @@ namespace Sklad2.Core.OutputModels
         public List<ApplicationItemOutputModel> Items { get; set; } = new List<ApplicationItemOutputModel>();
 
 
+        public int SupplierId { get; set; }
+
+
         public string SupplierName { get; set; }
     }
 }

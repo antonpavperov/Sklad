@@ -41,7 +41,7 @@ else
 
 	protected override void OnInitialized()
 	{
-		application = Service.GetAll().Where(a => a.Id == Id).FirstOrDefault();
+        application = Service.GetAll().FirstOrDefault(a => a.Id == Id);
 
 		base.OnInitialized();
 	}

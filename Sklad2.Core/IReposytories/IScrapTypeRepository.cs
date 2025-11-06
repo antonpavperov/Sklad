@@ -7,14 +7,8 @@ using Sklad2.Core.DTO;
 
 namespace Sklad2.Core.IReposytories
 {
-    public interface IApplicationRepository
+    public interface IScrapTypeRepository
     {
-        public List<ApplicationDto> GetAll();
-
-
-        ApplicationDto Add(ApplicationDto application);
-
-
-        void Delete(int id);
+        List<ScrapTypeDto> GetAll();
     }
 }
