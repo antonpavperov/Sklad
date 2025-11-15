@@ -1,7 +1,25 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<AuthorizeView Roles="Manager">
+    <Authorized>
+        <button class="btn btn-success" @onclick="ShowModal">
+            Создать заявку
+        </button>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Worker">
+    <Authorized>
+        <button class="btn btn-warning">Переместить лом</button>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Chief">
+    <Authorized>
+        <button class="btn btn-primary">Создать заявку на производство</button>
+    </Authorized>
+</AuthorizeView>
 
 <div class="container" style="margin-bottom:15px;">
 	<InputText class="form-control" placeholder="Поиск по поставщику" @bind-Value="searchText" />

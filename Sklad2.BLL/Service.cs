@@ -11,15 +11,22 @@ namespace Sklad2.BLL
         private IApplicationRepository _applicationRepository;
         private IScrapTypeRepository _scrapTypeRepository;
         private ISupplierRepository _supplierRepository;
+        private IUserRepository _userRepository;
+        private IWareHouseRepository _wareHouseRepository;
+
 
         public Service(
             IApplicationRepository applicationRepository,
             IScrapTypeRepository scrapTypeRepository,
-            ISupplierRepository supplierRepository)
+            ISupplierRepository supplierRepository,
+            IUserRepository userRepository,
+            IWareHouseRepository wareHouseRepository)
         {
             _applicationRepository = applicationRepository;
             _scrapTypeRepository = scrapTypeRepository;
             _supplierRepository = supplierRepository;
+            _userRepository = userRepository;
+            _wareHouseRepository = wareHouseRepository;
         }
 
         public List<ApplicationOutputModel> GetAll()
@@ -81,6 +88,23 @@ namespace Sklad2.BLL
             _applicationRepository.Delete(id);
         }
 
+        public List<UserDto> GetUsers()
+        {
+            return _userRepository.GetAll();
+        }
+
+
+        public void MoveScrap(int itemId, int wareHouseId, int wareHouseItemId)
+        {
+            _applicationRepository.MoveItemToSection(itemId, wareHouseId, wareHouseItemId);
+        }
+
+
+
+        public List<WareHouseDto> GetWareHouses()
+        {
+            return _wareHouseRepository.GetAll();
+        }
 
 
     }

@@ -6,6 +6,7 @@ using Sklad2.Core.IReposytories;
 using Sklad2.DAL;
 using Sklad2.BLL;
 using Sklad2.Core.MappsterStuff;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace Sklad2.WEB
@@ -32,9 +33,29 @@ namespace Sklad2.WEB
 
             builder.Services.AddScoped<Service>();
 
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IWareHouseRepository, WareHouseRepository>();
+
+            
+
 
             TypeAdapterConfig.GlobalSettings.Apply(new MapsterConfig());
             builder.Services.AddMapster();
+
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(
+                    options =>
+                    {
+                        options.LoginPath = "/login";
+                        options.Cookie.Name = "auth_token";
+                        options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+                    });
+
+            builder.Services.AddAuthorization();
+            builder.Services.AddCascadingAuthenticationState();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

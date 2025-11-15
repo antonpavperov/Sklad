@@ -16,5 +16,9 @@ namespace Sklad2.Core.IReposytories
 
 
         void Delete(int id);
+
+        void MoveItemToSection(int itemId, int wareHouseId, int wareHouseItemId);
     }
+
+
 }

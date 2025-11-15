@@ -1,0 +1,88 @@
+﻿@page "/login"
+@inject IUserRepository UserRepository
+@inject NavigationManager Nav
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Sklad2.Core.DTO
+@using Sklad2.Core.IReposytories
+
+<h3>Авторизация</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="StartLogin">
+    <div class="mb-2">
+        <label>Должность</label>
+        <InputSelect class="form-control" @bind-Value="loginModel.RoleId">
+            <option value="">Выберите роль</option>
+            @foreach (var role in roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <InputText @bind-Value="loginModel.Login" placeholder="Логин" class="form-control mb-2" />
+    <InputText @bind-Value="loginModel.Password" placeholder="Пароль" type="password" class="form-control mb-2" />
+
+    <button type="submit" class="btn btn-primary mt-2">Войти</button>
+
+    @if (error != null)
+    {
+        <p class="text-danger mt-2">@error</p>
+    }
+</EditForm>
+
+
+@code {
+    [CascadingParameter]
+    public HttpContext HttpContext { get; set; }
+
+    private List<UserRoleDto> roles = new();
+    private LoginModel loginModel = new();
+    private string? error;
+
+    protected override void OnInitialized()
+    {
+        
+        roles = UserRepository
+            .GetAll()
+            .Select(u => u.Role)       
+            .DistinctBy(r => r.Id)     
+            .ToList();
+    }
+
+    private async Task StartLogin()
+    {
+        error = null;
+
+        var users = UserRepository.GetAll();
+
+        var user = users.FirstOrDefault(u =>
+            u.Login == loginModel.Login &&
+            u.Password == loginModel.Password &&
+            u.RoleId == loginModel.RoleId
+        );
+
+        if (user == null)
+        {
+            error = "Неверный логин/пароль/роль";
+            return;
+        }
+
+        var claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name, user.Login),
+            new Claim(ClaimTypes.Role, user.Role.Name), // 👈 ГЛАВНОЕ!!!
+            new Claim("UserId", user.Id.ToString())
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        await HttpContext.SignInAsync(principal);
+
+        Nav.NavigateTo("/");
+    }
+
+    
+}

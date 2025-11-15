@@ -51,6 +51,17 @@ namespace Sklad2.DAL
             }
         }
 
+        public void MoveItemToSection(int itemId, int wareHouseId, int wareHouseItemId)
+        {
+            var item = _dataContext.ApplicationItems.FirstOrDefault(x => x.Id == itemId);
+            if (item != null)
+            {
+                item.WareHouseId = wareHouseId;           
+                item.WareHouseItemId = wareHouseItemId;   
+                _dataContext.SaveChanges();
+            }
+        }
+
 
     }
 }

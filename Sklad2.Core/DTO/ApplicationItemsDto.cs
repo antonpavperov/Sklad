@@ -32,12 +32,18 @@ namespace Sklad2.Core.DTO
         public ScrapTypeDto? ScrapType { get; set; }
 
 
-        public SupplierDto? Supplier { get; set; }        
-        
-        
-        public WareHouseDto? WareHouse { get; set; } 
-        
-        
+        public SupplierDto? Supplier { get; set; }
+
+       
+        public int WareHouseId { get; set; }
+
+
+        public WareHouseDto? WareHouse { get; set; }        
+       
+
         public WareHouseSectionDto? WareHouseItem { get; set; }
+
+
+        public int WareHouseItemId { get; set; }
     }
 }

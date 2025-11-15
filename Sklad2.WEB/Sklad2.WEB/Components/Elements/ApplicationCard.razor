@@ -11,6 +11,7 @@
         <div class="d-flex justify-content-between">
             <button class="btn btn-primary btn-sm" @onclick="ShowDetails">Подробнее</button>
             <button class="btn btn-danger btn-sm" @onclick="Delete">Удалить</button>
+            <button class="btn btn-success btn-sm" @onclick="ShowMoveModal">Принять</button>
         </div>
     </div>
 </div>
@@ -52,6 +53,56 @@
     </div>
 }
 
+@if (isMoveModalOpen)
+{
+    <div class="modal show d-block" style="background-color: rgba(0,0,0,0.4)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Перемещение лома — заявка №@Application.Id</h5>
+                    <button class="btn-close" @onclick="CloseMoveModal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label>Цех</label>
+                    <InputSelect class="form-control" @bind-Value="selectedWareHouseId">
+                        <option value="">Выберите цех</option>
+                        @foreach (var w in warehouses)
+                        {
+                            <option value="@w.Id">@w.Name</option>
+                        }
+                    </InputSelect>
+
+                    @if (selectedWareHouseId > 0)
+                    {
+                        <label class="mt-3">Засек</label>
+                        <InputSelect class="form-control" @bind-Value="selectedWareHouseItemId">
+                            <option value="">Выберите засек</option>
+                            @foreach (var sec in warehouses.First(w => w.Id == selectedWareHouseId).Secnions)
+                            {
+                                <option value="@sec.Id">@sec.Name</option>
+                            }
+                        </InputSelect>
+                    }
+
+                    <h6 class="mt-3">Содержимое заявки:</h6>
+                    <ul>
+                        @foreach (var it in Application.Items)
+                        {
+                            <li>@it.ScrapTypeName – @it.Quantity кг</li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseMoveModal">Отмена</button>
+                    <button class="btn btn-primary" @onclick="AcceptMove">Принять</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
     [Parameter]
     public ApplicationOutputModel Application { get; set; }
@@ -60,21 +111,44 @@
     public EventCallback OnChanged { get; set; }
 
     private bool isDetailsShown = false;
+    private bool isMoveModalOpen = false;
+    private int selectedWareHouseId;
+    private int selectedWareHouseItemId;
+    private List<WareHouseDto> warehouses;
 
-    private void ShowDetails()
-    {
-        isDetailsShown = true;
-    }
-
-    private void HideDetails()
-    {
-        isDetailsShown = false;
-    }
+    private void ShowDetails() => isDetailsShown = true;
+    private void HideDetails() => isDetailsShown = false;
 
     private void Delete()
     {
         Service.DeleteApplication(Application.Id);
-        OnChanged.InvokeAsync(); 
+        OnChanged.InvokeAsync();
         HideDetails();
+    }
+
+    private void ShowMoveModal()
+    {
+        warehouses = Service.GetWareHouses(); 
+        selectedWareHouseId = 0;
+        selectedWareHouseItemId = 0;
+        isMoveModalOpen = true;
+    }
+
+    private void CloseMoveModal() => isMoveModalOpen = false;
+
+    private void AcceptMove()
+    {
+        if (selectedWareHouseId == 0 || selectedWareHouseItemId == 0) return;
+
+        foreach (var item in Application.Items)
+        {
+            if (item.Id.HasValue)
+            {
+                Service.MoveScrap(item.Id.Value, selectedWareHouseId, selectedWareHouseItemId);
+            }
+        }
+
+        OnChanged.InvokeAsync();
+        isMoveModalOpen = false;
     }
 }
