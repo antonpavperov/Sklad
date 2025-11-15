@@ -72,7 +72,7 @@
         var claims = new List<Claim>()
         {
             new Claim(ClaimTypes.Name, user.Login),
-            new Claim(ClaimTypes.Role, user.Role.Name), // 👈 ГЛАВНОЕ!!!
+            new Claim(ClaimTypes.Role, user.Role.Name), 
             new Claim("UserId", user.Id.ToString())
         };
 
